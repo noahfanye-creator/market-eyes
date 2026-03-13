@@ -1,0 +1,185 @@
+{
+  "name": "Market Eyes V1 — Cron + Pipeline + 飞书",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * 1-5"
+            }
+          ]
+        }
+      },
+      "id": "cron",
+      "name": "工作日 8:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [220, 300]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/market-eyes/scripts && python3 pipeline.py --date $(date +%Y-%m-%d) 2>&1 && echo '---PREMARKET---' && cat /opt/market-eyes/output/premarket/$(date +%Y-%m-%d)_premarket.md"
+      },
+      "id": "exec-pipeline",
+      "name": "执行 Pipeline",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [440, 300],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"app_id\": \"cli_a9271f9ada78dcc2\",\n  \"app_secret\": \"7oLTQrRJI1DcTvgX0KitghcqsmXJeKJT\"\n}",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "feishu-token",
+      "name": "获取飞书 Token",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 200],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=open_id",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $json.tenant_access_token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "receive_id",
+              "value": "ou_c227153e4ea07569dc8bc07f9f7c23d7"
+            },
+            {
+              "name": "msg_type",
+              "value": "text"
+            },
+            {
+              "name": "content",
+              "value": "={{ JSON.stringify({ text: $('执行 Pipeline').first().json.stdout.split('---PREMARKET---\\n').pop() || '盘前卡已生成（内容为空）' }) }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "feishu-success",
+      "name": "飞书通知-成功",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"app_id\": \"cli_a9271f9ada78dcc2\",\n  \"app_secret\": \"7oLTQrRJI1DcTvgX0KitghcqsmXJeKJT\"\n}",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "feishu-token-err",
+      "name": "获取飞书 Token(告警)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 400],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=open_id",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $json.tenant_access_token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "receive_id",
+              "value": "ou_c227153e4ea07569dc8bc07f9f7c23d7"
+            },
+            {
+              "name": "msg_type",
+              "value": "text"
+            },
+            {
+              "name": "content",
+              "value": "={{ JSON.stringify({ text: 'Market Eyes Pipeline 失败\\n' + ($('执行 Pipeline').first().json.stderr || '未知错误') }) }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "feishu-fail",
+      "name": "飞书告警-失败",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, 400]
+    }
+  ],
+  "connections": {
+    "工作日 8:00": {
+      "main": [
+        [{ "node": "执行 Pipeline", "type": "main", "index": 0 }]
+      ]
+    },
+    "执行 Pipeline": {
+      "main": [
+        [{ "node": "获取飞书 Token", "type": "main", "index": 0 }],
+        [{ "node": "获取飞书 Token(告警)", "type": "main", "index": 0 }]
+      ]
+    },
+    "获取飞书 Token": {
+      "main": [
+        [{ "node": "飞书通知-成功", "type": "main", "index": 0 }]
+      ]
+    },
+    "获取飞书 Token(告警)": {
+      "main": [
+        [{ "node": "飞书告警-失败", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Shanghai"
+  },
+  "staticData": null
+}

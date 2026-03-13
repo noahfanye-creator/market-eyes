@@ -1,0 +1,18 @@
+{
+  "report_meta": {
+    "report_type": "premarket_plan",
+    "date": "2026-03-10",
+    "generated_at": "2026-03-10 11:17:43 UTC"
+  },
+  "yesterday_a": {
+    "indices": [],
+    "sectors_top": [],
+    "sectors_bottom": []
+  },
+  "overnight": [],
+  "news_increments": [],
+  "watchlist_mapping": {
+    "symbols": [],
+    "stocks": []
+  }
+}

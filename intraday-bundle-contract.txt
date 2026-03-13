@@ -1,0 +1,1 @@
+10:00 data package: date, snapshot_time, indices, sectors_top3, sectors_bottom3, leaders, news_increment, premarket_key_points. System only provides data; no conclusions.

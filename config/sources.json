@@ -1,0 +1,41 @@
+{
+  "rsshub_base": "http://127.0.0.1:1200",
+  "active": [
+    {
+      "id": "cls_hot",
+      "name": "财联社·热门",
+      "category": "快讯",
+      "path": "cls/hot"
+    },
+    {
+      "id": "jin10",
+      "name": "金十数据",
+      "category": "快讯",
+      "path": "jin10",
+      "url": "http://127.0.0.1:1200/jin10",
+      "skip_date_filter": true
+    }
+  ],
+  "experimental": [
+    {
+      "id": "eastmoney_broker",
+      "name": "东方财富·券商研报",
+      "category": "研报",
+      "path": "eastmoney/report/brokerreport"
+    },
+    {
+      "id": "szse_rules",
+      "name": "深交所业务规则",
+      "category": "公告",
+      "path": "szse/rule/allrules/bussiness"
+    }
+  ],
+  "disabled": [
+    {
+      "id": "example",
+      "name": "示例源",
+      "category": "未分类",
+      "path": "douban/movie/playing"
+    }
+  ]
+}

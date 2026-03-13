@@ -1,0 +1,10 @@
+# 环境变量（含 Tushare Token，勿提交）
+.env
+.venv/
+__pycache__/
+*.pyc
+logs/
+*.log
+
+# 误创建的目录（勿提交）
+cd 

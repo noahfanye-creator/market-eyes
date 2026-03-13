@@ -1,0 +1,44 @@
+{
+  "date": "2026-03-10",
+  "indices": [
+    {
+      "name": "上证指数",
+      "close": 4123.14,
+      "pct_chg": 0.65,
+      "status": "偏强",
+      "prev_close": 4096.51
+    },
+    {
+      "name": "深证成指",
+      "close": 14354.07,
+      "pct_chg": 2.04,
+      "status": "偏强",
+      "prev_close": 14067.1
+    },
+    {
+      "name": "创业板指",
+      "close": 3306.14,
+      "pct_chg": 3.04,
+      "status": "偏强",
+      "prev_close": 3208.6
+    },
+    {
+      "name": "科创50",
+      "close": 1420.54,
+      "pct_chg": 2.16,
+      "status": "偏强",
+      "prev_close": 1390.5
+    }
+  ],
+  "sectors_top": [],
+  "sectors_bottom": [],
+  "money_flow": {},
+  "watchlist": [],
+  "meta": {
+    "fetch_time": "2026-03-10 07:26:39 UTC",
+    "tushare_calls": 1,
+    "sina_calls": 1,
+    "errors": [],
+    "data_source": "sina"
+  }
+}

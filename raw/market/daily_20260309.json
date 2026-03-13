@@ -1,0 +1,41 @@
+{
+  "date": "2026-03-09",
+  "indices": [
+    {
+      "code": "000001.SH",
+      "name": "上证指数",
+      "close": 4096.6,
+      "pct_chg": -0.67,
+      "amount_yi": 11941.1
+    },
+    {
+      "code": "399001.SZ",
+      "name": "深证成指",
+      "close": 14067.5,
+      "pct_chg": -0.74,
+      "amount_yi": 14534.4
+    },
+    {
+      "code": "399006.SZ",
+      "name": "创业板指",
+      "close": 3208.58,
+      "pct_chg": -0.64,
+      "amount_yi": 6501.8
+    },
+    {
+      "code": "000688.SH",
+      "name": "科创50",
+      "close": 1390.48,
+      "pct_chg": -1.69,
+      "amount_yi": 743.3
+    }
+  ],
+  "stocks": [],
+  "sectors": [],
+  "money_flow": {},
+  "meta": {
+    "fetch_time": "2026-03-09 13:51:03 UTC",
+    "tushare_calls": 4,
+    "errors": []
+  }
+}
