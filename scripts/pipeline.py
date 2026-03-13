@@ -116,6 +116,14 @@ def main():
 
     print("✅ Pipeline 完成")
     log.info("pipeline finished")
+    # 先抓市场数据
+    from fetch_market_data import main as run_fetch
+    import sys as _sys
+    _sys.argv = [_sys.argv[0], '--date', date_str]
+    run_fetch()
+    from generate_report import main as run_report
+    run_report()
+    log.info("report generation done")
     return 0
 
 

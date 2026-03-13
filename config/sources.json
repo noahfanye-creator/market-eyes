@@ -1,5 +1,5 @@
 {
-  "rsshub_base": "http://127.0.0.1:1200",
+  "rsshub_base": "http://172.17.0.1:1200",
   "active": [
     {
       "id": "cls_hot",
@@ -12,7 +12,7 @@
       "name": "金十数据",
       "category": "快讯",
       "path": "jin10",
-      "url": "http://127.0.0.1:1200/jin10",
+      "url": "http://172.17.0.1:1200/jin10",
       "skip_date_filter": true
     }
   ],

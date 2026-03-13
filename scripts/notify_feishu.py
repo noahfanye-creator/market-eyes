@@ -90,7 +90,7 @@ def run_notify_feishu(
         return
 
     if success:
-        premarket_path = OUTPUT_DIR / "premarket" / f"{date_str}_premarket.md"
+        premarket_path = OUTPUT_DIR / "report" / f"{date_str}_premarket_report.md"
         if premarket_path.exists():
             text = premarket_path.read_text(encoding="utf-8")
         else:
